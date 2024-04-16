@@ -75,7 +75,7 @@ def main(args):
                 loading_status = resnet.load_state_dict(torch.load(ckpt_path.replace('DUMMY', cam_name)))
                 print(cam_name, loading_status)
                 resnet = nn.Sequential(*list(resnet.children())[:-1])
-                resnet = resnet.to('cpu')
+                resnet = resnet.cuda()
                 resnet.eval()
                 feature_extractors[cam_name] = resnet
 
@@ -98,7 +98,7 @@ def main(args):
                 image = Image.fromarray(image)
                 image = transform(image)
                 processed_images.append(image)
-            processed_images = torch.stack(processed_images).to('cpu')
+            processed_images = torch.stack(processed_images).cuda()
 
             # query the model
             all_features = []

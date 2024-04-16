@@ -64,7 +64,7 @@ class DiffusionPolicy(nn.Module):
             })
         })
 
-        nets = nets.float().to('cpu')
+        nets = nets.float().cuda()
         ENABLE_EMA = True
         if ENABLE_EMA:
             ema = EMAModel(model=nets, power=self.ema_power)
