@@ -44,7 +44,7 @@ def main():
     assert(history_len + future_len >= prediction_len)
     assert(future_len % prediction_len == 0)
 
-    wandb.init(project="mobile-aloha2", reinit=True, entity="mobile-aloha2", name=expr_name) # mode='disabled', 
+    wandb.init(project="mobile-aloha2", reinit=True, name=expr_name) # mode='disabled', 
 
     if not os.path.isdir(ckpt_dir):
         os.makedirs(ckpt_dir)
@@ -81,7 +81,7 @@ def main():
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size_train, shuffle=True, pin_memory=True, num_workers=1, prefetch_factor=1)
     val_dataloader = DataLoader(val_dataset, batch_size=batch_size_val, shuffle=True, pin_memory=True, num_workers=1, prefetch_factor=1)
     
-    policy = ActuatorNetwork(prediction_len).cuda()
+    policy = ActuatorNetwork(prediction_len).to('cpu')
     optimizer = torch.optim.AdamW(policy.parameters(), lr=lr, weight_decay=weight_decay)
 
     n_parameters = sum(p.numel() for p in policy.parameters() if p.requires_grad)
@@ -100,7 +100,7 @@ def main():
                 validation_dicts = []
                 for batch_idx, data in enumerate(val_dataloader):
                     observed_speed, commanded_speed = data
-                    out, forward_dict = policy(observed_speed.cuda(), commanded_speed.cuda())
+                    out, forward_dict = policy(observed_speed.to('cpu'), commanded_speed.to('cpu'))
                     validation_dicts.append(forward_dict)
 
                 validation_summary = compute_dict_mean(validation_dicts)
@@ -127,7 +127,7 @@ def main():
         optimizer.zero_grad()
         data = next(train_dataloader)
         observed_speed, commanded_speed = data
-        out, forward_dict = policy(observed_speed.cuda(), commanded_speed.cuda())
+        out, forward_dict = policy(observed_speed.to('cpu'), commanded_speed.to('cpu'))
         # backward
         loss = forward_dict['loss']
         loss.backward()
@@ -176,7 +176,7 @@ def visualize_prediction(dataset_path_list, episode_ids, policy, norm_stats, his
         for t in range(0, episode_len, prediction_len):
             offset_start_ts = t + history_len
             policy_input = norm_observed_speed[offset_start_ts-history_len: offset_start_ts+future_len]
-            policy_input = torch.from_numpy(policy_input).float().unsqueeze(dim=0).cuda()
+            policy_input = torch.from_numpy(policy_input).float().unsqueeze(dim=0).to('cpu')
             pred = policy(policy_input)
             pred = pred.detach().cpu().numpy()[0]
             all_pred += out_unnorm_fn(pred).tolist()

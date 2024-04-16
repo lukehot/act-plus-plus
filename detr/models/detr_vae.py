@@ -49,6 +49,7 @@ class DETRVAE(nn.Module):
         self.camera_names = camera_names
         self.transformer = transformer
         self.encoder = encoder
+        # vector quantization
         self.vq, self.vq_class, self.vq_dim = vq, vq_class, vq_dim
         self.state_dim, self.action_dim = state_dim, action_dim
         hidden_dim = transformer.d_model
@@ -282,7 +283,7 @@ def build(args):
     if args.no_encoder:
         encoder = None
     else:
-        encoder = build_transformer(args)
+        encoder = build_encoder(args)
 
     model = DETRVAE(
         backbones,

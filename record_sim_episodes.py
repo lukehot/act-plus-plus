@@ -24,7 +24,7 @@ def main(args):
     """
 
     task_name = args['task_name']
-    dataset_dir = args['dataset_dir']
+    dataset_dir = os.path.join(args['dataset_dir'],args['task_name'])
     num_episodes = args['num_episodes']
     onscreen_render = args['onscreen_render']
     inject_noise = False

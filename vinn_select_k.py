@@ -84,8 +84,8 @@ def main(args):
 
     X = np.concatenate(X)
     Y = np.concatenate(Y)
-    train_inputs = torch.from_numpy(X).cuda()
-    train_targets = torch.from_numpy(Y).cuda()
+    train_inputs = torch.from_numpy(X).to('cpu')
+    train_targets = torch.from_numpy(Y).to('cpu')
     print(f'All features: {train_inputs.shape}')
 
     # load test data
@@ -109,8 +109,8 @@ def main(args):
 
     X = np.concatenate(X)
     Y = np.concatenate(Y)
-    val_inputs = torch.from_numpy(X).cuda()
-    val_targets = torch.from_numpy(Y).cuda()
+    val_inputs = torch.from_numpy(X).to('cpu')
+    val_targets = torch.from_numpy(Y).to('cpu')
 
     val_losses = []
     for inputs, targets in zip(chunks(val_inputs, batch_size), chunks(val_targets, batch_size)):

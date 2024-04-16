@@ -145,3 +145,7 @@ ckpts/
 *.png
 *.npy
 play.ipynb
+
+#data 
+act_data/
+ckpt_dir/

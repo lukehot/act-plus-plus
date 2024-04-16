@@ -151,8 +151,8 @@ def main(args):
     vis_features = np.concatenate(vis_features)
     state_features  = np.concatenate(state_features)
     Y = np.concatenate(Y)
-    train_inputs = [torch.from_numpy(vis_features).cuda(), torch.from_numpy(state_features).cuda()]
-    train_targets = torch.from_numpy(Y).cuda()
+    train_inputs = [torch.from_numpy(vis_features).to('cpu'), torch.from_numpy(state_features).to('cpu')]
+    train_targets = torch.from_numpy(Y).to('cpu')
 
     set_seed(1000)
     feature_extractors = {}
@@ -161,7 +161,7 @@ def main(args):
         loading_status = resnet.load_state_dict(torch.load(model_dir.replace('DUMMY', cam_name)))
         print(cam_name, loading_status)
         resnet = nn.Sequential(*list(resnet.children())[:-1])
-        resnet = resnet.cuda()
+        resnet = resnet.to('cpu')
         resnet.eval()
         feature_extractors[cam_name] = resnet
 
@@ -188,7 +188,7 @@ def main(args):
         ts = env.reset()
 
         ### evaluation loop
-        qpos_history = torch.zeros((1, max_timesteps, state_dim)).cuda()
+        qpos_history = torch.zeros((1, max_timesteps, state_dim)).to('cpu')
         image_list = [] # for visualization
         qpos_list = []
         target_qpos_list = []
@@ -206,7 +206,7 @@ def main(args):
                         image_list.append({'main': obs['image']})
                     qpos_numpy = np.array(obs['qpos'])
                     # qpos = pre_process(qpos_numpy)
-                    qpos = torch.from_numpy(qpos_numpy).float().cuda().unsqueeze(0)
+                    qpos = torch.from_numpy(qpos_numpy).float().to('cpu').unsqueeze(0)
                     qpos_history[:, t] = qpos
                     _, curr_image_raw = get_image(ts, camera_names)
 
@@ -225,7 +225,7 @@ def main(args):
                     for cam_id, curr_image in enumerate(curr_image_raw):
                         curr_image = Image.fromarray(curr_image) # TODO only one camera
                         curr_image = transform(curr_image)
-                        curr_image = curr_image.unsqueeze(dim=0).cuda()
+                        curr_image = curr_image.unsqueeze(dim=0).to('cpu')
                         curr_image_feature = feature_extractors[camera_names[cam_id]](curr_image)
                         curr_image_feature = curr_image_feature.squeeze(3).squeeze(2)
                         all_cam_features.append(curr_image_feature)
@@ -318,7 +318,7 @@ def get_image(ts, camera_names):
         curr_image_raw = np.stack(curr_images, axis=0)
     else:
         curr_image_raw = rearrange(ts.observation['image'], 'h w c -> c h w')
-    curr_image = torch.from_numpy(curr_image_raw / 255.0).float().cuda().unsqueeze(0)
+    curr_image = torch.from_numpy(curr_image_raw / 255.0).float().to('cpu').unsqueeze(0)
     curr_image_raw = rearrange(curr_image_raw, 'b c h w -> b h w c')
     return curr_image, curr_image_raw
 
