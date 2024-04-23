@@ -531,4 +531,25 @@ CUDA_VISIBLE_DEVICES=1 python3 train_actuator_network.py
 Apr 15
 
 python3 imitate_episodes.py --task_name sim_insertion_scripted --ckpt_dir /Users/mike/code/act-plus-plus/act_data/top_only/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 200  --lr 1e-5 --seed 0
-python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir /Users/mike/code/act-plus-plus/act_data/top_only/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_epochs 2000  --lr 1e-5 --seed 0
+python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir act_data/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 2000  --lr 1e-5 --seed 0
+
+Apr 18
+python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir act_data/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000 
+
+Apr 19
+# record single camera for cube transfer 
+python3 record_sim_episodes.py --task_name sim_transfer_cube_top_top_camera --dataset_dir act_data --num_episodes 50
+
+python3 visualize_episodes.py --dataset_dir act_data/sim_transfer_cube_top_top_camera --episode_idx 0
+
+python3 imitate_episodes.py --task_name sim_transfer_cube_top_top_camera --ckpt_dir act_data/sim_transfer_cube_top_top_camera --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000 
+
+#GPU usage
+watch -n 1 nvidia-smi
+
+Apr 22
+# record single camera for cube transfer 
+python3 record_sim_episodes.py --task_name sim_transfer_cube_top_3_camera --dataset_dir act_data --num_episodes 1
+python3 visualize_episodes.py --dataset_dir act_data/sim_transfer_cube_top_3_camera --episode_idx 0
+
+python3 imitate_episodes.py --task_name sim_transfer_cube_top_3_camera --ckpt_dir act_data/sim_transfer_cube_top_3_camera --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000 

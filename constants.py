@@ -2,13 +2,27 @@ import pathlib
 import os
 
 ### Task parameters
-DATA_DIR = '/Users/mike/code/act-plus-plus/act_data'
+DATA_DIR = '/home/luke/robot/act-plus-plus/act_data'
 SIM_TASK_CONFIGS = {
     'sim_transfer_cube_scripted':{
         'dataset_dir': DATA_DIR + '/sim_transfer_cube_scripted',
         'num_episodes': 50,
         'episode_len': 400,
         'camera_names': ['top', 'left_wrist', 'right_wrist']
+    },
+
+    'sim_transfer_cube_top_3_camera':{
+        'dataset_dir': DATA_DIR + '/sim_transfer_cube_top_3_camera',
+        'num_episodes': 50,
+        'episode_len': 400,
+        'camera_names': ['top', 'top_1', 'top_2']
+    },
+
+    'sim_transfer_cube_top_left_camera':{
+        'dataset_dir': DATA_DIR + '/sim_transfer_cube_top_left_camera',
+        'num_episodes': 50,
+        'episode_len': 400,
+        'camera_names': ['top', 'left_wrist']
     },
 
     'sim_transfer_cube_human':{
