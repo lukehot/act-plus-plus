@@ -49,7 +49,7 @@ def main(args):
     validate_every = args['validate_every']
     save_every = args['save_every']
     resume_ckpt_path = args['resume_ckpt_path']
-
+    use_wandb = args['use_wandb']
     # get task parameters
     is_sim = task_name[:4] == 'sim_'
     if is_sim or task_name == 'all':
@@ -139,13 +139,14 @@ def main(args):
         'real_robot': not is_sim,
         'load_pretrain': args['load_pretrain'],
         'actuator_config': actuator_config,
+        'use_wandb': use_wandb
     }
 
     if not os.path.isdir(ckpt_dir):
         os.makedirs(ckpt_dir)
     config_path = os.path.join(ckpt_dir, 'config.pkl')
     expr_name = ckpt_dir.split('/')[-1]
-    if not is_eval:
+    if not is_eval and use_wandb:
         wandb.init(project="mobile-aloha2", reinit=True, name=expr_name)
         wandb.config.update(config)
     with open(config_path, 'wb') as f:
@@ -155,8 +156,9 @@ def main(args):
         results = []
         for ckpt_name in ckpt_names:
             success_rate, avg_return = eval_bc(config, ckpt_name, save_episode=True, num_rollouts=10)
-            wandb.log({'success_rate': success_rate, 'avg_return': avg_return})
             results.append([ckpt_name, success_rate, avg_return])
+            if use_wandb:
+                wandb.log({'success_rate': success_rate, 'avg_return': avg_return})
 
         for ckpt_name, success_rate, avg_return in results:
             print(f'{ckpt_name}: {success_rate=} {avg_return=}')
@@ -177,7 +179,8 @@ def main(args):
     ckpt_path = os.path.join(ckpt_dir, f'policy_best.ckpt')
     torch.save(best_state_dict, ckpt_path)
     print(f'Best ckpt, val loss {min_val_loss:.6f} @ step{best_step}')
-    wandb.finish()
+    if use_wandb:
+        wandb.finish()
 
 
 def make_policy(policy_class, policy_config):
@@ -542,7 +545,7 @@ def train_bc(train_dataloader, val_dataloader, config):
     eval_every = config['eval_every']
     validate_every = config['validate_every']
     save_every = config['save_every']
-
+    use_wandb = config['use_wandb']
     set_seed(seed)
 
     policy = make_policy(policy_class, policy_config)
@@ -580,8 +583,9 @@ def train_bc(train_dataloader, val_dataloader, config):
                     min_val_loss = epoch_val_loss
                     best_ckpt_info = (step, min_val_loss, deepcopy(policy.serialize()))
             for k in list(validation_summary.keys()):
-                validation_summary[f'val_{k}'] = validation_summary.pop(k)            
-            wandb.log(validation_summary, step=step)
+                validation_summary[f'val_{k}'] = validation_summary.pop(k)
+            if use_wandb:
+                wandb.log(validation_summary, step=step)
             print(f'Val loss:   {epoch_val_loss:.5f}')
             summary_string = ''
             for k, v in validation_summary.items():
@@ -595,7 +599,8 @@ def train_bc(train_dataloader, val_dataloader, config):
             ckpt_path = os.path.join(ckpt_dir, ckpt_name)
             torch.save(policy.serialize(), ckpt_path)
             success, _ = eval_bc(config, ckpt_name, save_episode=True, num_rollouts=10)
-            wandb.log({'success': success}, step=step)
+            if use_wandb:
+                wandb.log({'success': success}, step=step)
 
         # training
         policy.train()
@@ -606,7 +611,8 @@ def train_bc(train_dataloader, val_dataloader, config):
         loss = forward_dict['loss']
         loss.backward()
         optimizer.step()
-        wandb.log(forward_dict, step=step) # not great, make training 1-2% slower
+        if use_wandb:
+            wandb.log(forward_dict, step=step) # not great, make training 1-2% slower
 
         if step % save_every == 0:
             ckpt_path = os.path.join(ckpt_dir, f'policy_step_{step}_seed_{seed}.ckpt')
@@ -652,6 +658,7 @@ if __name__ == '__main__':
     parser.add_argument('--history_len', action='store', type=int)
     parser.add_argument('--future_len', action='store', type=int)
     parser.add_argument('--prediction_len', action='store', type=int)
+    parser.add_argument('--use_wandb', action='store_true')
 
     # for ACT
     parser.add_argument('--kl_weight', action='store', type=int, help='KL Weight', required=False)
