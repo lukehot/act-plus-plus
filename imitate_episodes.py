@@ -68,7 +68,7 @@ def main(args):
     name_filter = task_config.get('name_filter', lambda n: True)
 
     # fixed parameters
-    state_dim = 14
+    state_dim = args['state_dim']
     lr_backbone = 1e-5
     backbone = 'resnet18'
     if policy_class == 'ACT':
@@ -91,6 +91,7 @@ def main(args):
                          'vq_dim': args['vq_dim'],
                          'action_dim': 16,
                          'no_encoder': args['no_encoder'],
+                         'state_dim': args['state_dim']
                          }
     elif policy_class == 'Diffusion':
 
@@ -662,5 +663,6 @@ if __name__ == '__main__':
     parser.add_argument('--vq_class', action='store', type=int, help='vq_class')
     parser.add_argument('--vq_dim', action='store', type=int, help='vq_dim')
     parser.add_argument('--no_encoder', action='store_true')
+    parser.add_argument('--state_dim', action='store', type=int, default=14)
     
     main(vars(parser.parse_args()))
