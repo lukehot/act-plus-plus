@@ -517,8 +517,6 @@ python3 vinn_eval.py \
 --task_name $TASK_NAME 
 
 
----------------------------------------------------------------------------------------
-
 NOTE: chunk size cannot be any number, try before launching
 TODO: Add history, EMA at test time
 
