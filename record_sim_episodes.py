@@ -29,6 +29,7 @@ def main(args):
     onscreen_render = args['onscreen_render']
     inject_noise = False
     render_cam_name = 'top'
+    state_dim = args['state_dim']
 
     if not os.path.isdir(dataset_dir):
         os.makedirs(dataset_dir, exist_ok=True)
@@ -167,9 +168,9 @@ def main(args):
                                          chunks=(1, 480, 640, 3), )
             # compression='gzip',compression_opts=2,)
             # compression=32001, compression_opts=(0, 0, 0, 0, 9, 1, 1), shuffle=False)
-            qpos = obs.create_dataset('qpos', (max_timesteps, 14))
-            qvel = obs.create_dataset('qvel', (max_timesteps, 14))
-            action = root.create_dataset('action', (max_timesteps, 14))
+            qpos = obs.create_dataset('qpos', (max_timesteps, state_dim))
+            qvel = obs.create_dataset('qvel', (max_timesteps, state_dim))
+            action = root.create_dataset('action', (max_timesteps, state_dim))
 
             for name, array in data_dict.items():
                 root[name][...] = array
