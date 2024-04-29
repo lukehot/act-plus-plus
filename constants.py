@@ -10,6 +10,12 @@ SIM_TASK_CONFIGS = {
         "episode_len": 400,
         "camera_names": ["top", "left_wrist", "right_wrist"],
     },
+    "sim_pickup": {
+        "dataset_dir": DATA_DIR + "/sim_pickup",
+        "num_episodes": 1,
+        "episode_len": 200,
+        "camera_names": ["top","wrist"],
+    },
     "sim_transfer_cube_human": {
         "dataset_dir": DATA_DIR + "/sim_transfer_cube_human",
         "num_episodes": 50,
@@ -69,6 +75,17 @@ START_ARM_POSE = [
     0,
     0.02239,
     -0.02239,
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0,
+    0.02239,
+    -0.02239,
+]
+
+START_ARM_POSE_SINGLE = [
     0,
     -0.96,
     1.16,
