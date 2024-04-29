@@ -74,21 +74,23 @@ class PickAndTransferPolicy(BasePolicy):
     def generate_trajectory(self, ts_first):
         init_mocap_pose_right = ts_first.observation["mocap_pose_right"]
         init_mocap_pose_left = ts_first.observation["mocap_pose_left"]
+        print(init_mocap_pose_right)
 
         box_info = np.array(ts_first.observation["env_state"])
         box_xyz = box_info[:3]
         box_quat = box_info[3:]
-        # print(f"Generate trajectory for {box_xyz=}")
+        print(f"Generate trajectory for {box_xyz=}")
 
         gripper_pick_quat = Quaternion(init_mocap_pose_right[3:])
+        print(gripper_pick_quat)
         gripper_pick_quat = gripper_pick_quat * Quaternion(
             axis=[0.0, 1.0, 0.0], degrees=-60
         )
+        print(gripper_pick_quat)
 
         meet_left_quat = Quaternion(axis=[1.0, 0.0, 0.0], degrees=90)
 
         meet_xyz = np.array([0, 0.5, 0.25])
-
         self.left_trajectory = [
             {
                 "t": 0,
@@ -318,7 +320,7 @@ def test_policy(task_name):
     else:
         raise NotImplementedError
 
-    for episode_idx in range(2):
+    for episode_idx in range(1):
         ts = env.reset()
         episode = [ts]
         if onscreen_render:
@@ -327,8 +329,17 @@ def test_policy(task_name):
             plt.ion()
 
         policy = PickAndTransferPolicy(inject_noise)
+        print('qpos=', ts.observation["qpos"])
+        print('qvel=', ts.observation["qvel"])
+        
         for step in range(episode_len):
             action = policy(ts)
+            # print(step)
+            # print('action = ', action[8:])
+            joint_traj = ts.observation["qpos"] 
+            # print('joint_traj=', joint_traj[7:])
+            # print('gripper_ctrl_traj' , ts.observation["gripper_ctrl"])
+
             ts = env.step(action)
             episode.append(ts)
             if onscreen_render:
