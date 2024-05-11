@@ -29,7 +29,7 @@ def main(args):
     num_episodes = args["num_episodes"]
     onscreen_render = args["onscreen_render"]
     inject_noise = False
-    render_cam_name = "top"
+    render_cam_name = "angle"
     state_dim = args["state_dim"]
 
     if not os.path.isdir(dataset_dir):
@@ -37,7 +37,7 @@ def main(args):
 
     episode_len = SIM_TASK_CONFIGS[task_name]["episode_len"]
     camera_names = SIM_TASK_CONFIGS[task_name]["camera_names"]
-    if task_name == "sim_pickup":
+    if task_name == "sim_pickup" or task_name == "S1_pickup":
         policy_cls = PickObjectPolicy
     else:
         raise NotImplementedError
@@ -77,7 +77,8 @@ def main(args):
         gripper_ctrl_traj = [ts.observation["gripper_ctrl"] for ts in episode]
         for joint, ctrl_all in zip(joint_traj, gripper_ctrl_traj):
             ctrl = PUPPET_GRIPPER_POSITION_NORMALIZE_FN(ctrl_all[0])
-            joint[6] = ctrl
+            # Hardcode left gripper index
+            joint[8] = ctrl
 
         subtask_info = episode[0].observation["env_state"].copy()  # box pose at step 0
 
@@ -201,6 +202,6 @@ if __name__ == "__main__":
         "--num_episodes", action="store", type=int, help="num_episodes", required=False
     )
     parser.add_argument("--onscreen_render", action="store_true")
-    parser.add_argument("--state_dim", default=7)
+    parser.add_argument("--state_dim", type=int, default=7)
 
     main(vars(parser.parse_args()))

@@ -542,6 +542,10 @@ python3 visualize_episodes.py --dataset_dir /Users/mike/code/act-plus-plus/act_d
 
 python -m mujoco.viewer --mjcf=assets/viperx_ee_pickup.xml
 
+python -m mujoco.viewer --mjcf=mujocoPlayground/S1/mjcf/S1_with_aloha_gripper_ee.xml
 python -m mujoco.viewer --mjcf=assets/bimanual_viperx_ee_transfer_cube.xml
 
 python scripted_policy_single.py | tee scripted_policy_single.txt
+
+python3 record_sim_episodes_single.py --task_name S1_pickup --dataset_dir /Users/mike/code/act-plus-plus/act_data/ --num_episodes 10 --onscreen_render
+python3 visualize_episodes.py --dataset_dir /Users/mike/code/act-plus-plus/act_data/S1_pickup --episode_idx 0

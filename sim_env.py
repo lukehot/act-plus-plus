@@ -6,7 +6,7 @@ from dm_control import mujoco
 from dm_control.rl import control
 from dm_control.suite import base
 
-from constants import DT, XML_DIR, START_ARM_POSE_SINGLE, START_ARM_POSE
+from constants import DT, XML_DIR, START_ARM_POSE_SINGLE, START_ARM_POSE, S1_START_QPOS
 from constants import PUPPET_GRIPPER_POSITION_UNNORMALIZE_FN
 from constants import MASTER_GRIPPER_POSITION_NORMALIZE_FN
 from constants import PUPPET_GRIPPER_POSITION_NORMALIZE_FN
@@ -39,43 +39,168 @@ def make_sim_env(task_name):
     """
     if "sim_transfer_cube" in task_name:
         xml_path = os.path.join(XML_DIR, f"bimanual_viperx_transfer_cube.xml")
-        physics = mujoco.Physics.from_xml_path(xml_path)
         task = TransferCubeTask(random=False)
-        env = control.Environment(
-            physics,
-            task,
-            time_limit=20,
-            control_timestep=DT,
-            n_sub_steps=None,
-            flat_observation=False,
-        )
     elif "sim_insertion" in task_name:
         xml_path = os.path.join(XML_DIR, f"bimanual_viperx_insertion.xml")
-        physics = mujoco.Physics.from_xml_path(xml_path)
         task = InsertionTask(random=False)
-        env = control.Environment(
-            physics,
-            task,
-            time_limit=20,
-            control_timestep=DT,
-            n_sub_steps=None,
-            flat_observation=False,
-        )
     elif "sim_pickup" in task_name:
         xml_path = os.path.join(XML_DIR, f"viperx_pickup.xml")
-        physics = mujoco.Physics.from_xml_path(xml_path)
         task = SingleViperXPickupTask(random=False)
-        env = control.Environment(
-            physics,
-            task,
-            time_limit=20,
-            control_timestep=DT,
-            n_sub_steps=None,
-            flat_observation=False,
-        )
+    elif "S1_pickup" in task_name:
+        xml_path = os.path.join(XML_DIR, f"S1_pickup.xml")
+        task = S1PickupTask(random=False)
     else:
         raise NotImplementedError
+    physics = mujoco.Physics.from_xml_path(xml_path)
+    env = control.Environment(
+        physics,
+        task,
+        time_limit=20,
+        control_timestep=DT,
+        n_sub_steps=None,
+        flat_observation=False,
+    )
     return env
+
+
+class S1Task(base.Task):
+    def __init__(self, random=None):
+        super().__init__(random=random)
+
+    def before_step(self, action, physics):
+        # print("action:", len(action))
+        arm_action = action[:8]
+        normalized_gripper_action = action[8]
+
+        gripper_action = PUPPET_GRIPPER_POSITION_UNNORMALIZE_FN(
+            normalized_gripper_action
+        )
+
+        full_gripper_action = [gripper_action, -gripper_action]
+
+        env_action = np.concatenate(
+            [
+                arm_action,
+                full_gripper_action,
+            ]
+        )
+        super().before_step(env_action, physics)
+        return
+
+    def initialize_episode(self, physics):
+        """Sets the state of the environment at the start of each episode."""
+        self.JOINT_START = physics.model.name2id("Joint_StrutSlider", "joint")
+        self.JOINT_END = physics.model.name2id("Joint_Arm_6", "joint") + 1
+        self.BOX_START = physics.model.name2id("red_box_joint", "joint")
+        super().initialize_episode(physics)
+
+    @staticmethod
+    def get_qpos(physics):
+        JOINT_START = physics.model.name2id("Joint_StrutSlider", "joint")
+        JOINT_END = physics.model.name2id("Joint_Arm_6", "joint") + 1
+        GRIPPER_LEFT = physics.model.name2id("vx300s/left_finger", "joint")
+        qpos_raw = physics.data.qpos.copy()
+        arm_qpos = qpos_raw[JOINT_START:JOINT_END]
+        gripper_qpos = [PUPPET_GRIPPER_POSITION_NORMALIZE_FN(qpos_raw[GRIPPER_LEFT])]
+        return np.concatenate([arm_qpos, gripper_qpos])
+
+    @staticmethod
+    def get_qvel(physics):
+        qvel_raw = physics.data.qvel.copy()
+
+        JOINT_START = physics.model.name2id("Joint_StrutSlider", "joint")
+        JOINT_END = physics.model.name2id("Joint_Arm_6", "joint") + 1
+        GRIPPER_LEFT = physics.model.name2id("vx300s/left_finger", "joint")
+        arm_qvel = qvel_raw[JOINT_START:JOINT_END]
+        gripper_qvel = [PUPPET_GRIPPER_VELOCITY_NORMALIZE_FN(qvel_raw[GRIPPER_LEFT])]
+        return np.concatenate([arm_qvel, gripper_qvel])
+
+    @staticmethod
+    def get_env_state(physics):
+        raise NotImplementedError
+
+    def get_observation(self, physics):
+        obs = collections.OrderedDict()
+        obs["qpos"] = self.get_qpos(physics)
+        obs["qvel"] = self.get_qvel(physics)
+        obs["env_state"] = self.get_env_state(physics)
+        obs["images"] = dict()
+        obs["images"]["top"] = physics.render(height=480, width=640, camera_id="top")
+        obs["images"]["wrist"] = physics.render(
+            height=480, width=640, camera_id="wrist"
+        )
+        obs["images"]["angle"] = physics.render(
+            height=480, width=640, camera_id="angle"
+        )
+        # obs['images']['vis'] = physics.render(height=480, width=640, camera_id='front_close')
+
+        return obs
+
+    def get_reward(self, physics):
+        # return whether left gripper is holding the box
+        raise NotImplementedError
+
+
+class S1PickupTask(S1Task):
+    def __init__(self, random=None):
+        super().__init__(random=random)
+        self.max_reward = 2
+
+    def initialize_episode(self, physics):
+        """Sets the state of the environment at the start of each episode."""
+        # TODO Notice: this function does not randomize the env configuration. Instead, set BOX_POSE from outside
+        # reset qpos, control and box position
+        self.JOINT_START = physics.model.name2id("Joint_StrutSlider", "joint")
+        self.JOINT_END = physics.model.name2id("Joint_Arm_6", "joint") + 1
+        self.BOX_START = physics.model.name2id("red_box_joint", "joint")
+        with physics.reset_context():
+
+            print(f"-------- {physics.named.data.qpos}")
+            print(f"-------- {physics.named.data.qvel}")
+
+            print(f"---- self.JOINT_START & end{self.JOINT_START}, {self.JOINT_END}")
+            physics.named.data.qpos[self.JOINT_START : self.JOINT_END] = S1_START_QPOS[
+                self.JOINT_START : self.JOINT_END
+            ]
+
+            np.copyto(
+                physics.data.ctrl, S1_START_QPOS[self.JOINT_START : self.JOINT_END + 2]
+            )
+            assert BOX_POSE[0] is not None
+            physics.named.data.qpos[self.BOX_START : self.BOX_START + 7] = BOX_POSE[0]
+            # print(f"{BOX_POSE=}")
+        super().initialize_episode(physics)
+
+    @staticmethod
+    def get_env_state(physics):
+        env_start_idx = physics.model.name2id("vx300s/right_finger", "joint") + 3
+
+        env_state = physics.data.qpos.copy()[env_start_idx:]
+        return env_state
+
+    def get_reward(self, physics):
+        # return whether left gripper is holding the box
+        all_contact_pairs = []
+        for i_contact in range(physics.data.ncon):
+            id_geom_1 = physics.data.contact[i_contact].geom1
+            id_geom_2 = physics.data.contact[i_contact].geom2
+            name_geom_1 = physics.model.id2name(id_geom_1, "geom")
+            name_geom_2 = physics.model.id2name(id_geom_2, "geom")
+            contact_pair = (name_geom_1, name_geom_2)
+            all_contact_pairs.append(contact_pair)
+
+        reward = 0
+        touch_gripper = (
+            "red_box",
+            "vx300s/10_left_gripper_finger",
+        ) in all_contact_pairs
+        touch_table = ("red_box", "table") in all_contact_pairs
+
+        if touch_gripper:
+            reward = 1
+        if touch_gripper and not touch_table:
+            reward = 2
+        return reward
 
 
 class BimanualViperXTask(base.Task):
@@ -167,6 +292,7 @@ class BimanualViperXTask(base.Task):
         # return whether left gripper is holding the box
         raise NotImplementedError
 
+
 class SingleViperXTask(base.Task):
     def __init__(self, random=None):
         super().__init__(random=random)
@@ -200,9 +326,7 @@ class SingleViperXTask(base.Task):
         qpos_raw = qpos_raw[:8]
         arm_qpos = qpos_raw[:6]
         gripper_qpos = [PUPPET_GRIPPER_POSITION_NORMALIZE_FN(qpos_raw[6])]
-        return np.concatenate(
-            [arm_qpos, gripper_qpos]
-        )
+        return np.concatenate([arm_qpos, gripper_qpos])
 
     @staticmethod
     def get_qvel(physics):
@@ -210,9 +334,7 @@ class SingleViperXTask(base.Task):
         qvel_raw = qvel_raw[:8]
         arm_qvel = qvel_raw[:6]
         gripper_qvel = [PUPPET_GRIPPER_VELOCITY_NORMALIZE_FN(qvel_raw[6])]
-        return np.concatenate(
-            [arm_qvel, gripper_qvel]
-        )
+        return np.concatenate([arm_qvel, gripper_qvel])
 
     @staticmethod
     def get_env_state(physics):
@@ -239,6 +361,7 @@ class SingleViperXTask(base.Task):
         # return whether left gripper is holding the box
         raise NotImplementedError
 
+
 class SingleViperXPickupTask(SingleViperXTask):
     def __init__(self, random=None):
         super().__init__(random=random)
@@ -258,7 +381,7 @@ class SingleViperXPickupTask(SingleViperXTask):
 
     @staticmethod
     def get_env_state(physics):
-        env_state = physics.data.qpos.copy()[16:]
+        env_state = physics.data.qpos.copy()[8:]
         return env_state
 
     def get_reward(self, physics):
@@ -277,7 +400,6 @@ class SingleViperXPickupTask(SingleViperXTask):
             "red_box",
             "vx300s/10_left_gripper_finger",
         ) in all_contact_pairs
-        print(all_contact_pairs)
         touch_table = ("red_box", "table") in all_contact_pairs
 
         if touch_gripper:
@@ -285,6 +407,7 @@ class SingleViperXPickupTask(SingleViperXTask):
         if touch_gripper and not touch_table:
             reward = 2
         return reward
+
 
 class TransferCubeTask(BimanualViperXTask):
     def __init__(self, random=None):
