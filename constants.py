@@ -22,12 +22,19 @@ SIM_TASK_CONFIGS = {
         "episode_len": 400,
         "camera_names": ["top", "left_wrist"],
     },
+    "S1_pickup": {
+        "dataset_dir": DATA_DIR + "/S1_pickup",
+        "num_episodes": 1,
+        "episode_len": 250,
+        "camera_names": ["top", "angle"],
+    },
     "sim_pickup": {
         "dataset_dir": DATA_DIR + "/sim_pickup",
         "num_episodes": 50,
         "episode_len": 200,
         "camera_names": ["top", "wrist"],
         "action_dim": 9,
+        "camera_names": ["top", "wrist"],
     },
     "sim_transfer_cube_human": {
         "dataset_dir": DATA_DIR + "/sim_transfer_cube_human",
@@ -79,25 +86,19 @@ JOINT_NAMES = [
     "wrist_angle",
     "wrist_rotate",
 ]
-START_ARM_POSE = [
-    0,
-    -0.96,
-    1.16,
-    0,
-    -0.3,
-    0,
-    0.02239,
-    -0.02239,
-    0,
-    -0.96,
-    1.16,
-    0,
-    -0.3,
-    0,
-    0.02239,
-    -0.02239,
-]
-
+# gripper + wheel
+S1_START_QPOS = [0] * 14 + [0.021, -0.021] + [0] * 2
+# S1_MOCAP_START_QPOS = [-0.030, -0.17, 0.15]
+# S1_MOCAP_START_QPOS = [0.34724606, 1.2338852, 0.80517225]
+#   -0.0092    0.3       0.49
+#   -0.052     0.3       0.49
+# S1_MOCAP_START_QPOS = [0.35, 1.5, 0.76]
+# Default position
+S1_MOCAP_START_QPOS = [0.3472, 1.314, 0.724]
+# front vertical position
+# S1_MOCAP_START_QPOS = [0.3472, 0.6, 0.7]
+TABLE_HEIGHT = 0.5
+START_ARM_POSE = []
 START_ARM_POSE_SINGLE = [
     0,
     -0.96,

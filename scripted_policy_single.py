@@ -63,29 +63,34 @@ class PickObjectPolicy(BasePolicy):
 
     def generate_trajectory(self, ts_first):
         init_mocap_pose = ts_first.observation["mocap_pose"]
-        print(f'init_mocap_pose={init_mocap_pose}')
+        print(f"init_mocap_pose={init_mocap_pose}")
+        # print(f"init_left_finger={ts_first.observation['left_finger']}")
         box_info = np.array(ts_first.observation["env_state"])
+        print(f"box_info={box_info}")
 
         box_xyz = box_info[:3]
         box_quat = box_info[3:]
-        
+
         print(f"Generate trajectory for {box_xyz=}")
 
         gripper_pick_quat = Quaternion(init_mocap_pose[3:])
         print(gripper_pick_quat)
         # add break point
-        
+        # x axis
         gripper_pick_quat = gripper_pick_quat * Quaternion(
-            axis=[0.0, 1.0, 0.0], degrees=-60
+            axis=[1.0, 0.0, 0.0], degrees=-45
         )
-        meet_xyz = np.array([0, 0.5, 0.25])
+        # z clock wise
+        gripper_pick_quat = gripper_pick_quat * Quaternion(
+            axis=[0.0, 1.0, 0.0], degrees=15
+        )
 
         self.trajectory = [
             {
                 "t": 0,
                 "xyz": init_mocap_pose[:3],
                 "quat": init_mocap_pose[3:],
-                "gripper": 0,
+                "gripper": 1,
             },  # sleep
             {
                 "t": 90,
@@ -94,20 +99,20 @@ class PickObjectPolicy(BasePolicy):
                 "gripper": 1,
             },  # approach the cube
             {
-                "t": 130,
-                "xyz": box_xyz + np.array([0, 0, -0.015]),
+                "t": 150,
+                "xyz": box_xyz + np.array([0, 0, -0.01]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 1,
             },  # go down
             {
-                "t": 170,
-                "xyz": box_xyz + np.array([0, 0, -0.015]),
+                "t": 190,
+                "xyz": box_xyz + np.array([0, 0, -0.01]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 0,
             },  # close gripper
             {
-                "t": 200,
-                "xyz": meet_xyz + np.array([0.05, 0, 0]),
+                "t": 250,
+                "xyz": box_xyz + np.array([0, 0, 0.3]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 0,
             },  # approach meet position
@@ -121,32 +126,29 @@ def test_policy(task_name):
 
     # setup the environment
     episode_len = SIM_TASK_CONFIGS[task_name]["episode_len"]
-    if "sim_pick" in task_name:
-        env = make_ee_sim_env("sim_pickup")
-    else:
-        raise NotImplementedError
-
-    for episode_idx in range(2):
+    env = make_ee_sim_env(task_name)
+    for episode_idx in range(1):
         ts = env.reset()
         episode = [ts]
         if onscreen_render:
             ax = plt.subplot()
-            plt_img = ax.imshow(ts.observation["images"]["angle"])
+            plt_img = ax.imshow(ts.observation["images"]["top"])
             plt.ion()
-        # print('qpos=', ts.observation["qpos"])
-        # print('qvel=', ts.observation["qvel"])
+        print("qpos=", ts.observation["qpos"])
+        print("qvel=", ts.observation["qvel"])
         policy = PickObjectPolicy(inject_noise)
         for step in range(episode_len):
             action = policy(ts)
-            joint_traj = ts.observation["qpos"] 
+            joint_traj = ts.observation["qpos"]
             # print(step)
-            # print('action = ', action)
-            # print('joint_traj=', joint_traj)
-            # print('gripper_ctrl_traj' , ts.observation["gripper_ctrl"])
+            # print("action = ", action)
+            # print("joint_traj=", joint_traj)
+            # print("gripper_ctrl_traj", ts.observation["gripper_ctrl"])
             ts = env.step(action)
             episode.append(ts)
             if onscreen_render:
-                plt_img.set_data(ts.observation["images"]["angle"])
+                plt_img.set_data(ts.observation["images"]["left_cam"])
+                # top
                 plt.pause(0.02)
         plt.close()
 
@@ -158,5 +160,5 @@ def test_policy(task_name):
 
 
 if __name__ == "__main__":
-    test_task_name = "sim_pickup"
+    test_task_name = "S1_pickup"
     test_policy(test_task_name)

@@ -1,0 +1,14 @@
+cube_pose [0.1603378  0.45432838 0.05       1.         0.         0.
+ 0.        ]
+init_mocap_pose=[0.21718881 0.49999888 0.29525084 1.         0.         0.
+ 0.        ]
+Generate trajectory for box_xyz=array([0.1603378 , 0.45432838, 0.05      ])
+1.000 +0.000i +0.000j +0.000k
+episode_idx=0 Successful, episode_return=72
+cube_pose [0.04975975 0.41090272 0.05       1.         0.         0.
+ 0.        ]
+init_mocap_pose=[0.21718881 0.49999888 0.29525084 1.         0.         0.
+ 0.        ]
+Generate trajectory for box_xyz=array([0.04975975, 0.41090272, 0.05      ])
+1.000 +0.000i +0.000j +0.000k
+episode_idx=1 Successful, episode_return=75

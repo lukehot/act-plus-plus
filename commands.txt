@@ -549,5 +549,11 @@ Apr 22
 # record single camera for cube transfer 
 python3 record_sim_episodes.py --task_name sim_transfer_cube_top_3_camera --dataset_dir act_data --num_episodes 1
 python3 visualize_episodes.py --dataset_dir act_data/sim_transfer_cube_top_3_camera --episode_idx 0
+python -m mujoco.viewer --mjcf=mujocoPlayground/S1/mjcf/S1_with_aloha_gripper_ee.xml
+python -m mujoco.viewer --mjcf=assets/bimanual_viperx_ee_transfer_cube.xml
 
 python3 imitate_episodes.py --task_name sim_transfer_cube_top_3_camera --ckpt_dir act_data/sim_transfer_cube_top_3_camera --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20  --lr 1e-5 --seed 0 --eval_every 10 --validate_every 20 
+python scripted_policy_single.py | tee scripted_policy_single.txt
+
+python3 record_sim_episodes_single.py --task_name S1_pickup --dataset_dir /Users/mike/code/act-plus-plus/act_data/ --num_episodes 10 --onscreen_render
+python3 visualize_episodes.py --dataset_dir /Users/mike/code/act-plus-plus/act_data/S1_pickup --episode_idx 0

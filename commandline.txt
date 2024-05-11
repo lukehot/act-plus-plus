@@ -1,0 +1,10 @@
+
+python3 record_sim_episodes_single.py --task_name sim_pickup --dataset_dir /home/luke/robot/act-plus-plus/act_data/ --num_episodes 50
+
+
+python3 imitate_episodes.py --task_name sim_pickup --ckpt_dir act_data/sim_pickup --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20  --lr 1e-5 --seed 0 --eval_every 10 --validate_every 2000
+
+
+python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir act_data/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000  --state_dim 14 --action_dim 16 --use_wandb
+
+python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir act_data/sim_transfer_cube_scripted --policy_class Diffusion --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000  --state_dim 14 --action_dim 16 --use_wandb
