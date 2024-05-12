@@ -317,6 +317,8 @@ def test_policy(task_name):
         env = make_ee_sim_env("sim_transfer_cube")
     elif "sim_insertion" in task_name:
         env = make_ee_sim_env("sim_insertion")
+    elif "sim_pickup" in task_name:
+        env = make_ee_sim_env("sim_pickup")
     else:
         raise NotImplementedError
 
@@ -329,14 +331,14 @@ def test_policy(task_name):
             plt.ion()
 
         policy = PickAndTransferPolicy(inject_noise)
-        print('qpos=', ts.observation["qpos"])
-        print('qvel=', ts.observation["qvel"])
-        
+        print("qpos=", ts.observation["qpos"])
+        print("qvel=", ts.observation["qvel"])
+
         for step in range(episode_len):
             action = policy(ts)
             # print(step)
             # print('action = ', action[8:])
-            joint_traj = ts.observation["qpos"] 
+            joint_traj = ts.observation["qpos"]
             # print('joint_traj=', joint_traj[7:])
             # print('gripper_ctrl_traj' , ts.observation["gripper_ctrl"])
 

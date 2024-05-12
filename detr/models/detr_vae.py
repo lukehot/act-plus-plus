@@ -70,6 +70,7 @@ class DETRVAE(nn.Module):
         self.encoder = encoder
         # vector quantization
         self.vq, self.vq_class, self.vq_dim = vq, vq_class, vq_dim
+        print("------------------ state_dim", state_dim)
         self.state_dim, self.action_dim = state_dim, action_dim
         hidden_dim = transformer.d_model
         self.action_head = nn.Linear(hidden_dim, action_dim)
@@ -91,6 +92,7 @@ class DETRVAE(nn.Module):
         # encoder extra parameters
         self.latent_dim = 32  # final size of latent z # TODO tune
         self.cls_embed = nn.Embedding(1, hidden_dim)  # extra cls token embedding
+
         self.encoder_action_proj = nn.Linear(
             action_dim, hidden_dim
         )  # project action to embedding

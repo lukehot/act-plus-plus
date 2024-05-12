@@ -152,7 +152,9 @@ class BimanualViperXTask(base.Task):
         obs["images"]["top"] = physics.render(height=480, width=640, camera_id="top")
         obs["images"]["top_1"] = physics.render(height=480, width=640, camera_id="top")
         obs["images"]["top_2"] = physics.render(height=480, width=640, camera_id="top")
-
+        # obs["images"]["wrist"] = physics.render(
+        #     height=480, width=640, camera_id="wrist"
+        # )
         obs["images"]["left_wrist"] = physics.render(
             height=480, width=640, camera_id="left_wrist"
         )
@@ -169,6 +171,7 @@ class BimanualViperXTask(base.Task):
     def get_reward(self, physics):
         # return whether left gripper is holding the box
         raise NotImplementedError
+
 
 class SingleViperXTask(base.Task):
     def __init__(self, random=None):
@@ -203,9 +206,7 @@ class SingleViperXTask(base.Task):
         qpos_raw = qpos_raw[:8]
         arm_qpos = qpos_raw[:6]
         gripper_qpos = [PUPPET_GRIPPER_POSITION_NORMALIZE_FN(qpos_raw[6])]
-        return np.concatenate(
-            [arm_qpos, gripper_qpos]
-        )
+        return np.concatenate([arm_qpos, gripper_qpos])
 
     @staticmethod
     def get_qvel(physics):
@@ -213,9 +214,7 @@ class SingleViperXTask(base.Task):
         qvel_raw = qvel_raw[:8]
         arm_qvel = qvel_raw[:6]
         gripper_qvel = [PUPPET_GRIPPER_VELOCITY_NORMALIZE_FN(qvel_raw[6])]
-        return np.concatenate(
-            [arm_qvel, gripper_qvel]
-        )
+        return np.concatenate([arm_qvel, gripper_qvel])
 
     @staticmethod
     def get_env_state(physics):
@@ -241,6 +240,7 @@ class SingleViperXTask(base.Task):
     def get_reward(self, physics):
         # return whether left gripper is holding the box
         raise NotImplementedError
+
 
 class SingleViperXPickupTask(SingleViperXTask):
     def __init__(self, random=None):
@@ -280,7 +280,6 @@ class SingleViperXPickupTask(SingleViperXTask):
             "red_box",
             "vx300s/10_left_gripper_finger",
         ) in all_contact_pairs
-        print(all_contact_pairs)
         touch_table = ("red_box", "table") in all_contact_pairs
 
         if touch_gripper:
@@ -288,6 +287,7 @@ class SingleViperXPickupTask(SingleViperXTask):
         if touch_gripper and not touch_table:
             reward = 2
         return reward
+
 
 class TransferCubeTask(BimanualViperXTask):
     def __init__(self, random=None):

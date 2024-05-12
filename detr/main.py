@@ -104,6 +104,7 @@ def get_args_parser():
 
     # repeat args in imitate_episodes just to avoid error. Will not be used
     parser.add_argument("--eval", action="store_true")
+    parser.add_argument("--use_wandb", action="store_true")
     parser.add_argument("--onscreen_render", action="store_true")
     parser.add_argument(
         "--ckpt_dir", action="store", type=str, help="ckpt_dir", required=True

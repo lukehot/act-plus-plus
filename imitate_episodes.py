@@ -77,11 +77,12 @@ def main(args):
     sample_weights = task_config.get("sample_weights", None)
     train_ratio = task_config.get("train_ratio", 0.99)
     name_filter = task_config.get("name_filter", lambda n: True)
+    # action_dim = task_config.get("action_dim", 9)  # aloha 16
 
     # fixed parameters
     state_dim = args["state_dim"]
     lr_backbone = 1e-5
-    backbone = "resnet18"
+    backbone = "resnet34"
     if policy_class == "ACT":
         enc_layers = 4
         dec_layers = 7
@@ -101,7 +102,7 @@ def main(args):
             "vq": args["use_vq"],
             "vq_class": args["vq_class"],
             "vq_dim": args["vq_dim"],
-            "action_dim": 16,
+            "action_dim": args["action_dim"],
             "no_encoder": args["no_encoder"],
             "state_dim": args["state_dim"],
         }
@@ -371,8 +372,9 @@ def eval_bc(config, ckpt_name, save_episode=True, num_rollouts=50):
         if real_robot:
             e()
         rollout_id += 0
+        print("debug ------------------------ task_name", task_name)
         ### set task
-        if "sim_transfer_cube" in task_name:
+        if "sim_transfer_cube" in task_name or "sim_pickup" in task_name:
             BOX_POSE[0] = sample_box_pose()  # used in sim reset
         elif "sim_insertion" in task_name:
             BOX_POSE[0] = np.concatenate(sample_insertion_pose())  # used in sim reset
@@ -745,7 +747,6 @@ def repeater(data_loader):
         epoch += 1
 
 
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--eval", action="store_true")
@@ -839,5 +840,5 @@ if __name__ == "__main__":
     parser.add_argument("--vq_dim", action="store", type=int, help="vq_dim")
     parser.add_argument("--no_encoder", action="store_true")
     parser.add_argument("--state_dim", action="store", type=int, default=14)
-
+    parser.add_argument("--action_dim", action="store", type=int, default=16)
     main(vars(parser.parse_args()))

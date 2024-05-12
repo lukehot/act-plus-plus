@@ -24,9 +24,10 @@ SIM_TASK_CONFIGS = {
     },
     "sim_pickup": {
         "dataset_dir": DATA_DIR + "/sim_pickup",
-        "num_episodes": 1,
+        "num_episodes": 50,
         "episode_len": 200,
         "camera_names": ["top", "wrist"],
+        "action_dim": 9,
     },
     "sim_transfer_cube_human": {
         "dataset_dir": DATA_DIR + "/sim_transfer_cube_human",

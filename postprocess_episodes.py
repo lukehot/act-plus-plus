@@ -113,6 +113,9 @@ def main(args):
 
         if "top" in image_dict.keys():
             image_dict["top"] = image_dict["top"][:, :, ::-1]
+        elif "wrist" in image_dict.keys():
+            image_dict["wrist"] = image_dict["wrist"][:, :, ::-1]
+
         elif "cam_high" in image_dict.keys():
             image_dict["cam_high"] = image_dict["cam_high"][:, :, ::-1]
         else:

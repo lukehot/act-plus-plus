@@ -176,6 +176,9 @@ class BimanualViperXEETask(base.Task):
         obs["env_state"] = self.get_env_state(physics)
         obs["images"] = dict()
         obs["images"]["top"] = physics.render(height=480, width=640, camera_id="top")
+        obs["images"]["wrist"] = physics.render(
+            height=480, width=640, camera_id="wrist"
+        )
         obs["images"]["top_1"] = physics.render(height=480, width=640, camera_id="top")
         obs["images"]["top_2"] = physics.render(height=480, width=640, camera_id="top")
         obs["images"]["angle"] = physics.render(
@@ -197,6 +200,7 @@ class BimanualViperXEETask(base.Task):
     def get_reward(self, physics):
         raise NotImplementedError
 
+
 class SingleViperXEETask(base.Task):
     """
     Environment for simulated robot single arm manipulation, with end-effector control.
@@ -209,6 +213,7 @@ class SingleViperXEETask(base.Task):
                                         gripper_velocity (1),  # normalized gripper velocity (pos: opening, neg: closing)
                         "images": {"main": (480x640x3)}        # h, w, c, dtype='uint8'
     """
+
     def __init__(self, random=None):
         super().__init__(random=random)
 
@@ -243,13 +248,9 @@ class SingleViperXEETask(base.Task):
         )
         np.copyto(physics.data.mocap_quat[0], [1, 0, 0, 0])
 
-
         # reset gripper control
         close_gripper_control = np.array(
-            [
-                PUPPET_GRIPPER_POSITION_CLOSE,
-                -PUPPET_GRIPPER_POSITION_CLOSE
-            ]
+            [PUPPET_GRIPPER_POSITION_CLOSE, -PUPPET_GRIPPER_POSITION_CLOSE]
         )
         np.copyto(physics.data.ctrl, close_gripper_control)
 
@@ -262,18 +263,14 @@ class SingleViperXEETask(base.Task):
         qpos = physics.data.qpos.copy()
         arm_qpos = qpos[:6]
         gripper_qpos = [PUPPET_GRIPPER_POSITION_NORMALIZE_FN(qpos[6])]
-        return np.concatenate(
-            [arm_qpos, gripper_qpos]
-        )
+        return np.concatenate([arm_qpos, gripper_qpos])
 
     @staticmethod
     def get_qvel(physics):
         qvel = physics.data.qvel.copy()
         arm_qvel = qvel[:6]
         gripper_qvel = [PUPPET_GRIPPER_VELOCITY_NORMALIZE_FN(qvel[6])]
-        return np.concatenate(
-            [arm_qvel, gripper_qvel]
-        )
+        return np.concatenate([arm_qvel, gripper_qvel])
 
     @staticmethod
     def get_env_state(physics):
@@ -313,9 +310,9 @@ class SingleViperXEEPickupTask(SingleViperXEETask):
         """Sets the state of the environment at the start of each episode."""
         self.initialize_robots(physics)
         # randomize box position
-        cube_pose = sample_box_pose() 
-        # cube_pose = [0.16883495,0.48866305,0.05,1,0,0,0] 
-        print('cube_pose',cube_pose)
+        cube_pose = sample_box_pose()
+        # cube_pose = [0.16883495,0.48866305,0.05,1,0,0,0]
+        print("cube_pose", cube_pose)
         box_start_idx = physics.model.name2id("red_box_joint", "joint")
         # print('box_start_idx',box_start_idx)
         # print('cube_pose', cube_pose)
@@ -346,7 +343,7 @@ class SingleViperXEEPickupTask(SingleViperXEETask):
             "red_box",
             "vx300s/10_left_gripper_finger",
         ) in all_contact_pairs
-     
+
         touch_table = ("red_box", "table") in all_contact_pairs
 
         if touch_gripper:
@@ -354,6 +351,7 @@ class SingleViperXEEPickupTask(SingleViperXEETask):
         if touch_gripper and not touch_table:
             reward = 2
         return reward
+
 
 class TransferCubeEETask(BimanualViperXEETask):
     def __init__(self, random=None):
@@ -365,11 +363,11 @@ class TransferCubeEETask(BimanualViperXEETask):
         self.initialize_robots(physics)
         # randomize box position
         cube_pose = sample_box_pose()
-        # cube_pose = [0.16883495,0.48866305,0.05,1,0,0,0] 
+        # cube_pose = [0.16883495,0.48866305,0.05,1,0,0,0]
 
         box_start_idx = physics.model.name2id("red_box_joint", "joint")
         # print('box_start_idx',box_start_idx)
-        print('cube_pose', cube_pose)
+        print("cube_pose", cube_pose)
         # print('physics.data.qpos',physics.data.qpos)
         np.copyto(physics.data.qpos[box_start_idx : box_start_idx + 7], cube_pose)
         # print(f"randomized cube position to {cube_position}")

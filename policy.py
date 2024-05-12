@@ -228,6 +228,9 @@ class DiffusionPolicy(nn.Module):
 class ACTPolicy(nn.Module):
     def __init__(self, args_override):
         super().__init__()
+
+        print("---------------------debug action_dim--", args_override["action_dim"])
+
         model, optimizer = build_ACT_model_and_optimizer(args_override)
         self.model = model  # CVAE decoder
         self.optimizer = optimizer
