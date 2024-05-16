@@ -93,25 +93,25 @@ class PickObjectPolicy(BasePolicy):
                 "gripper": 1,
             },  # sleep
             {
-                "t": 90,
-                "xyz": box_xyz + np.array([0, 0, 0.08]),
+                "t": 60,
+                "xyz": box_xyz + np.array([0, 0, 0.2]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 1,
             },  # approach the cube
             {
-                "t": 150,
-                "xyz": box_xyz + np.array([0, 0, -0.01]),
+                "t": 130,
+                "xyz": box_xyz + np.array([0, 0, 0.005]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 1,
             },  # go down
             {
-                "t": 190,
-                "xyz": box_xyz + np.array([0, 0, -0.01]),
+                "t": 160,
+                "xyz": box_xyz + np.array([0, 0, 0.005]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 0,
             },  # close gripper
             {
-                "t": 250,
+                "t": 220,
                 "xyz": box_xyz + np.array([0, 0, 0.3]),
                 "quat": gripper_pick_quat.elements,
                 "gripper": 0,
@@ -147,7 +147,7 @@ def test_policy(task_name):
             ts = env.step(action)
             episode.append(ts)
             if onscreen_render:
-                plt_img.set_data(ts.observation["images"]["left_cam"])
+                plt_img.set_data(ts.observation["images"]["left"])
                 # top
                 plt.pause(0.02)
         plt.close()

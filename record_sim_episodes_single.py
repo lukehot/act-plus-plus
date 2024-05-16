@@ -29,7 +29,7 @@ def main(args):
     num_episodes = args["num_episodes"]
     onscreen_render = args["onscreen_render"]
     inject_noise = False
-    render_cam_name = "angle"
+    render_cam_name = "left"
     state_dim = args["state_dim"]
 
     if not os.path.isdir(dataset_dir):

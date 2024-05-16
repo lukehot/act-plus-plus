@@ -132,6 +132,7 @@ class S1Task(base.Task):
         obs["images"]["angle"] = physics.render(
             height=480, width=640, camera_id="angle"
         )
+        obs["images"]["left"] = physics.render(height=480, width=640, camera_id="left")
         # obs['images']['vis'] = physics.render(height=480, width=640, camera_id='front_close')
 
         return obs
@@ -153,16 +154,16 @@ class S1PickupTask(S1Task):
         self.JOINT_START = physics.model.name2id("Joint_StrutSlider", "joint")
         self.JOINT_END = physics.model.name2id("Joint_Arm_6", "joint") + 1
         self.BOX_START = physics.model.name2id("red_box_joint", "joint")
+        self.GRIPPER_LEFT = physics.model.name2id("vx300s/left_finger", "joint")
         with physics.reset_context():
 
-            print(f"-------- {physics.named.data.qpos}")
-            print(f"-------- {physics.named.data.qvel}")
-
-            print(f"---- self.JOINT_START & end{self.JOINT_START}, {self.JOINT_END}")
+            # print(f"---- self.JOINT_START & end{self.JOINT_START}, {self.JOINT_END}")
             physics.named.data.qpos[self.JOINT_START : self.JOINT_END] = S1_START_QPOS[
                 self.JOINT_START : self.JOINT_END
             ]
-
+            physics.named.data.qpos[self.GRIPPER_LEFT : self.GRIPPER_LEFT + 2] = (
+                S1_START_QPOS[self.GRIPPER_LEFT : self.GRIPPER_LEFT + 2]
+            )
             np.copyto(
                 physics.data.ctrl, S1_START_QPOS[self.JOINT_START : self.JOINT_END + 2]
             )

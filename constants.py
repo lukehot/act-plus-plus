@@ -25,8 +25,8 @@ SIM_TASK_CONFIGS = {
     "S1_pickup": {
         "dataset_dir": DATA_DIR + "/S1_pickup",
         "num_episodes": 1,
-        "episode_len": 250,
-        "camera_names": ["top", "angle"],
+        "episode_len": 220,
+        "camera_names": ["top"],
     },
     "sim_pickup": {
         "dataset_dir": DATA_DIR + "/sim_pickup",

@@ -8,3 +8,9 @@ python3 imitate_episodes.py --task_name sim_pickup --ckpt_dir act_data/sim_picku
 python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir act_data/sim_transfer_cube_scripted --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000  --state_dim 14 --action_dim 16 --use_wandb
 
 python3 imitate_episodes.py --task_name sim_transfer_cube_scripted --ckpt_dir act_data/sim_transfer_cube_scripted --policy_class Diffusion --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 20000  --lr 1e-5 --seed 0 --eval_every 2000 --validate_every 1000  --state_dim 14 --action_dim 16 --use_wandb
+
+
+python3 record_sim_episodes_single.py --task_name S1_pickup --dataset_dir act_data/ --num_episodes 10 --onscreen_render --state_dim 9
+
+
+python3 imitate_episodes.py --task_name S1_pickup --ckpt_dir act_data/S1_pickup --policy_class ACT --kl_weight 10 --chunk_size 100 --hidden_dim 512 --batch_size 8 --dim_feedforward 3200 --num_steps 100  --lr 1e-5 --seed 0 --eval_every 25 --validate_every 50 --state_dim 9 --action_dim 11 

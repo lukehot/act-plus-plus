@@ -199,9 +199,8 @@ class S1EETask(base.Task):
         obs["images"]["angle"] = physics.render(
             height=480, width=640, camera_id="angle"
         )
-        obs["images"]["left_cam"] = physics.render(
-            height=480, width=640, camera_id="left_cam"
-        )
+        obs["images"]["left"] = physics.render(height=480, width=640, camera_id="left")
+
         # used in scripted policy to obtain starting pose
         obs["mocap_pose"] = np.concatenate(
             [physics.data.mocap_pos[0], physics.data.mocap_quat[0]]

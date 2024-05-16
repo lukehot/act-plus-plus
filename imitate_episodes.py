@@ -62,6 +62,8 @@ def main(args):
     use_wandb = args["use_wandb"]
     # get task parameters
     is_sim = task_name[:4] == "sim_"
+    if "S1_pickup" in task_name:
+        is_sim = True
     if is_sim or task_name == "all":
         from constants import SIM_TASK_CONFIGS
 
@@ -83,7 +85,7 @@ def main(args):
     # fixed parameters
     state_dim = args["state_dim"]
     lr_backbone = 1e-5
-    backbone = "resnet34"
+    backbone = "resnet18"
     if policy_class == "ACT":
         enc_layers = 4
         dec_layers = 7
