@@ -114,7 +114,8 @@ def main(args):
         policy_config = {
             "lr": args["lr"],
             "camera_names": camera_names,
-            "action_dim": 16,
+            "action_dim": args["action_dim"],
+            "state_dim": args["state_dim"],
             "observation_horizon": 1,
             "action_horizon": 8,
             "prediction_horizon": args["chunk_size"],

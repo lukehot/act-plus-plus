@@ -98,7 +98,24 @@ S1_MOCAP_START_QPOS = [0.3472, 1.314, 0.724]
 # front vertical position
 # S1_MOCAP_START_QPOS = [0.3472, 0.6, 0.7]
 TABLE_HEIGHT = 0.5
-START_ARM_POSE = []
+START_ARM_POSE = [
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0,
+    0.02239,
+    -0.02239,
+    0,
+    -0.96,
+    1.16,
+    0,
+    -0.3,
+    0,
+    0.02239,
+    -0.02239,
+]
 START_ARM_POSE_SINGLE = [
     0,
     -0.96,
