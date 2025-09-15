@@ -1,0 +1,31 @@
+<mujoco>
+    <include file="scene_table.xml"/>
+
+
+ <include file="S1_with_aloha_gripper_ee.xml" />
+    <worldbody>
+
+        <body name="box" pos="0.2 0.5 0.512">
+            <joint name="red_box_joint" type="free" frictionloss="0.01" />
+            <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002" />
+            <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="red_box" rgba="1 0 0 1" />
+        </body>
+
+    </worldbody>
+
+    <actuator>
+        <position name="Joint_StrutSlider" joint="Joint_StrutSlider" kp="3200" ctrllimited="true" ctrlrange="-0.5 0.5"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_0" joint="Joint_Arm_0" kp="3200" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_1" joint="Joint_Arm_1" kp="3200" ctrllimited="true" ctrlrange="0 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_2" joint="Joint_Arm_2" kp="1600" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_3" joint="Joint_Arm_3" kp="1600" ctrllimited="true" ctrlrange="-0.43 2.7"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_4" joint="Joint_Arm_4" kp="800" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_5" joint="Joint_Arm_5" kp="800" ctrllimited="true" ctrlrange="-0.785 2.355"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position name="Joint_Arm_6" joint="Joint_Arm_6" kp="400" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+        <position ctrllimited="true" ctrlrange="0.0184 0.058" joint="vx300s/left_finger" kp="200"  user="1"/>
+        <position ctrllimited="true" ctrlrange="-0.058 -0.0184" joint="vx300s/right_finger" kp="200"  user="1"/>
+    </actuator>
+
+
+
+</mujoco>

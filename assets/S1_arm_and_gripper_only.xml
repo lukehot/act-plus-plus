@@ -1,0 +1,167 @@
+<mujoco model="S1">
+  <compiler eulerseq="XYZ"/>
+  <default>
+    <default class="unused"/>
+  </default>
+  <asset>
+    <texture name="grid" type="2d" builtin="checker" rgb1="0.10000000000000001 0.20000000000000001 0.29999999999999999" rgb2="0.20000000000000001 0.29999999999999999 0.40000000000000002" width="512" height="512"/>
+    <material name="grid" class="unused" texture="grid" texrepeat="1 1" texuniform="true" reflectance="0.20000000000000001"/>
+
+    <mesh name="base_link" class="unused" file="base_link-00d46fe680b9eadf6ba388248452feeb989775e4.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_S1_Base_Override" class="unused" file="Link_S1_Base_Override-90be6a8a5d7e79157580dac00788acc0912db19d.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_FrontLeft_WheelFrame" class="unused" file="Link_FrontLeft_WheelFrame-ba3ca1cbdcb5c25444a934c5e07fb6895b7bccbd.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_FrontLeft_Wheel" class="unused" file="Link_FrontLeft_Wheel-edd878089790d5ae0b088e51057fa020d29695e9.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_FrontRight_WheelFrame" class="unused" file="Link_FrontRight_WheelFrame-eba1e8fb603117ee35ade67d09259c49f3d2bc09.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_FrontRight_Wheel" class="unused" file="Link_FrontRight_Wheel-5fa49125a6ed86f3f20a294f2f3e27ff2f925bf8.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_SensorLayer" class="unused" file="Link_SensorLayer-3d9c3276629655d6597d76258a0ace025981c4ab.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_BaseCover" class="unused" file="Link_BaseCover-3e71b5c672370b09573e2a992ae9f054f692fc7b.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Strut" class="unused" file="Link_Strut-a58e85d575af10bd3d4a58da1d9d638622a66908.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Shoulder" class="unused" file="Link_Shoulder-95f60acb1c741734d077b3d6faa38e30b9d60cae.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Neck" class="unused" file="Link_Neck-2eb90e60cab5f8540c5a970714e919d5873ea0e3.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Head" class="unused" file="Link_Head-77e7321ac6c14179728ad173a365b14cfece1feb.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_0" class="unused" file="Link_Arm_0-ab5e18d4c799522078367a67aef862dbe1047fb7.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_1" class="unused" file="Link_Arm_1-540d4d8f141c37989d71f93e76248c83d10d9b58.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_2" class="unused" file="Link_Arm_2-fd12b6eab9040285e7acf41430b46551b3009572.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_3" class="unused" file="Link_Arm_3-fbde29b6d02a725a74067a37d25f393a6f609307.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_4" class="unused" file="Link_Arm_4-738c22d85447877c85f4b14a793c0a21c7bd90d0.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_5" class="unused" file="Link_Arm_5-039a1e1a4eb7d529ff2aa69c2b463d95ffdfafcc.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_6" class="unused" file="Link_Arm_6-fc1a98932e374801a346e21a039ea8393545263d.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_Arm_7" class="unused" file="Link_Arm_7-fdae4f72fa25bde58c6664954c65a860beaf2d80.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_BackLeft_Wheel" class="unused" file="Link_BackLeft_Wheel-be3216f582cb15942a783c042b4f7e561deb740b.obj" scale="0.01 0.01 0.01"/>
+    <mesh name="Link_BackRight_Wheel" class="unused" file="Link_BackRight_Wheel-fa9c0c8d306dc6e024f463d886f29786a79f42ea.obj" scale="0.01 0.01 0.01"/>
+
+    <material name="Opaque(202,209,238)" specular="0.5" shininess="0.5" rgba="0.792157 0.819608 0.933333 1.0"/>
+    <material name="Opaque(47,47,47)" specular="0.5" shininess="0.5" rgba="0.184314 0.184314 0.184314 1.0"/>
+    <material name="Opaque(255,255,255)" specular="0.5" shininess="0.5" rgba="1.000000 1.000000 1.000000 1.0"/>
+
+    <mesh name="vx300s_7_gripper" file="vx300s_7_gripper.stl" scale="0.001 0.001 0.001" />
+    <mesh name="vx300s_8_gripper_prop" file="vx300s_8_gripper_prop.stl" scale="0.001 0.001 0.001" />
+    <mesh name="vx300s_9_gripper_bar" file="vx300s_9_gripper_bar.stl" scale="0.001 0.001 0.001" />
+    <mesh name="vx300s_10_gripper_finger_left" file="vx300s_10_custom_finger_left.stl" scale="0.001 0.001 0.001" />
+    <mesh name="vx300s_10_gripper_finger_right" file="vx300s_10_custom_finger_right.stl" scale="0.001 0.001 0.001" />
+  </asset>
+
+  <worldbody>
+    <geom type="plane" size="5 5 .01" rgba="1 1 1 1"/>
+    <body name="base_link" pos="-0.0054410381181372522 -0.26724482249293519 0.27168260578289555" euler="89.999787207023616 89.998553045844361 89.99978720392923">
+      <geom name="visual" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-5.5511151231257827e-17 5.5511151231257827e-17 -5.1174342541315809e-17" euler="-2.7333571107889576e-20 -2.486743698984766e-15 3.2110426294114319e-20" mesh="base_link"/>
+      <freejoint name="freejoint"/>
+      <body name="Link_S1_Base_Override" pos="0.22766478521407071 0.22966478418662548 0.007999998370247223" euler="1.6759773123798772e-15 -90 0">
+        <geom name="visual_0" material="Opaque(202,209,238)" class="unused" type="mesh" pos="0 6.9388939039072284e-18 6.9388939039072284e-18" euler="8.301671589752981e-22 -3.2960756480273984e-25 1.4798095162131535e-29" mesh="Link_S1_Base_Override"/>
+        <body name="Link_FrontLeft_WheelFrame" pos="0.1847147852140606 -0.1879647852140604 -0.012400000000000119" euler="90 -0 90.000000000000014">
+          <geom name="visual_1" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-5.5511151231257827e-17 6.9388939039072284e-17 0" euler="-9.047414149077107e-16 1.6419139893468127e-15 1.965683864871568e-15" mesh="Link_FrontLeft_WheelFrame"/>
+          <joint name="Joint_Base_Revolute 6" class="unused" type="hinge" pos="-0.033000000000000002 0.052300000000000041 0.011749999999999955" axis="-2.5411957890086698e-07 -0.99999999999996736 -9.3786074214486242e-11"/>
+          <body name="Link_FrontLeft_Wheel" pos="-2.2204460492503131e-16 6.9388939039072284e-17 -2.7755575615628914e-17" euler="2.2757731056060993e-15 -2.3802603784260734e-14 -1.2149511384913636e-15">
+            <geom name="visual_2" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-1.1102230246251565e-16 6.2450045135165055e-17 5.5511151231257827e-17" euler="-9.0470125294378264e-16 1.641913988750222e-15 1.9655232206550901e-15" mesh="Link_FrontLeft_Wheel"/>
+            <joint name="Joint_Base_Revolute 9" class="unused" type="hinge" pos="-1.1102230246251565e-16 5.5511151231257827e-17 0.011750000000000066" axis="2.413833849033883e-15 9.378568563713587e-11 -0.99999999999999978"/>
+          </body>
+        </body>
+        <body name="Link_FrontRight_WheelFrame" pos="-0.20821478521406106 -0.18796478521406024 -0.012400000000000147" euler="89.999999999999986 -6.361109362927032e-15 90.000000000000014">
+          <geom name="visual_3" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-2.7755575615628914e-17 5.5511151231257827e-17 -5.5511151231257827e-17" euler="-9.0490205972076118e-16 1.6418336680439904e-15 1.9657240262389254e-15" mesh="Link_FrontRight_WheelFrame"/>
+          <joint name="Joint_Base_Revolute 7" class="unused" type="hinge" pos="-0.033000000000000029 0.052300000000000041 0.011749999999999955" axis="-2.541195790673998e-07 -0.99999999999996736 -9.3786296256287386e-11"/>
+          <body name="Link_FrontRight_Wheel" pos="-2.7755575615628914e-17 5.5511151231257827e-17 -5.5511151231257827e-17" euler="2.2755722998433389e-15 -2.3802684105563558e-14 5.1462385467527338e-15">
+            <geom name="visual_4" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-2.7755575615628914e-17 1.1102230246251565e-16 -8.3266726846886741e-17" euler="-9.0490205870653948e-16 1.6418336674473984e-15 1.9656035429721537e-15" mesh="Link_FrontRight_Wheel"/>
+            <joint name="Joint_Base_Revolute 8" class="unused" type="hinge" pos="2.7755575615628914e-17 9.7144514654701197e-17 0.011749999999999955" axis="2.4138352509050758e-15 9.3785963189387314e-11 -0.99999999999999978"/>
+          </body>
+        </body>
+        <body name="Link_SensorLayer" pos="6.1275030188712165e-13 -0.0020352147859380304 0.0025000000003596173" euler="8.301671589752981e-22 -3.2960756480273984e-25 1.4798095162131535e-29">
+          <geom name="visual_5" material="Opaque(202,209,238)" class="unused" type="mesh" pos="0 6.9388939039072284e-18 0" euler="8.301671589752981e-22 -3.2960756480273984e-25 1.4798095162131535e-29" mesh="Link_SensorLayer"/>
+          <body name="Link_BaseCover" pos="4.391245059018941e-06 -0.00030000000000010574 0.00099999999999999395" euler="8.301671589752981e-22 -3.2960756480273984e-25 1.4798095162131535e-29">
+            <geom name="visual_6" material="Opaque(255,255,255)" class="unused" type="mesh" pos="-4.3368086899420177e-19 6.9388939039072284e-18 -6.9388939039072284e-18" euler="8.301671589752981e-22 -3.2960756480273984e-25 1.4798095162131535e-29" mesh="Link_BaseCover"/>
+            <body name="Link_Strut" pos="-2.7181704369966253e-11 0.00029267639461274392 0.007173729979796109" euler="-0.0014469544668381574 5.373525934067365e-09 -4.3997845332571362e-23">
+              <geom name="visual_7" material="Opaque(202,209,238)" class="unused" type="mesh" pos="0 -6.9388939039072284e-18 0" euler="-1.5585947627195728e-46 -1.4906272630606679e-31 2.027447628008005e-79" mesh="Link_Strut"/>
+              <body name="Link_Shoulder" pos="0 -6.9388939039072284e-18 -0.00029999999999983512" euler="-1.1154071704243835e-39 -7.4053074272420525e-25 7.2081513452982529e-66">
+                <geom name="visual_8" material="Opaque(202,209,238)" class="unused" type="mesh" pos="0 -6.9388939039072284e-18 0" euler="1.9694235973232403e-47 -1.4906272630606679e-31 -2.5618610407549607e-80" mesh="Link_Shoulder"/>
+                <body name="Link_Neck" pos="-1.7832957333041577e-15 0.17699999999999938 1.5652999999999941" euler="5.2608051673309691e-16 -1.283524759581232e-14 3.9756933518293955e-16">
+                  <geom name="visual_9" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-4.3368086899420177e-19 2.7755575615628914e-17 2.2204460492503131e-16" euler="6.5658342812831539e-47 -7.7056735589575514e-32 -4.4151747339634766e-80" mesh="Link_Neck"/>
+                  <body name="Link_Head" pos="0.001189809460567804 0.077607587451731824 0.0098217432258744797" euler="-7.7140836040498883e-15 3.3621490338294423e-13 -1.7299844476389218e-13">
+                    <geom name="visual_10" material="Opaque(202,209,238)" class="unused" type="mesh" pos="4.3368086899420177e-19 0 2.2204460492503131e-16" euler="5.5221927179352407e-59 1.3361157000956979e-43 6.4387712778239861e-104" mesh="Link_Head"/>
+                  </body>
+                </body>
+              </body>
+              <body name="Link_Arm_0" pos="6.1929628092372013e-16 0.081741639411259795 -0.20700551549935309" euler="-89.999999999999986 7.2473576730994171e-15 180">
+                <geom name="visual_11" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-8.6736173798840355e-19 2.7755575615628914e-17 2.7755575615628914e-17" euler="4.8889590129937428e-15 9.1644829316122297e-30 -5.6468544759430638e-30" mesh="Link_Arm_0"/>
+                <body name="Link_Arm_1" pos="-0.76324643053927899 -1.2819186098255531 -0.0044524162075475077" euler="9.8510761165839753 44.136029463825018 -75.998057834483049">
+                  <geom name="visual_12" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-1.1102230246251565e-16 -1.1102230246251565e-16 -1.1102230246251565e-16" euler="5.5770556268777173e-17 -1.6912423484370954e-15 3.3099211806620136e-16" mesh="Link_Arm_1"/>
+                  <joint name="Joint_Arm_0" class="unused" type="hinge" pos="-1.1102230246251565e-16 0.77502099999999996 -1.1102230246251565e-16" axis="-3.5267202749986319e-15 2.3304949718802701e-15 0.99999999999999989" frictionloss="30"/>
+                  <body name="Link_Arm_2" pos="-0.054999999999999827 -1.1102230246251565e-16 2.2204460492503131e-16" euler="-6.4699997813360172e-14 -90 0">
+                    <geom name="visual_13" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-2.2204460492503131e-16 -2.2204460492503131e-16 -1.1102230246251565e-16" euler="-3.4606666799962208e-16 9.6414971130263275e-16 -6.7035357251713888e-16" mesh="Link_Arm_2"/>
+                    <joint name="Joint_Arm_1" class="unused" type="hinge" pos="0.069999999999999729 0.77502099999999963 -0.055000000000000049" axis="-5.5065319592091571e-15 1.1595107874455874e-07 0.99999999999999312" limited="true" range="0 180.00001984784282" frictionloss="30"/>
+                    <body name="Link_Arm_3" pos="0.13999999999999868 -2.2204460492503131e-16 -0.10999999999999943" euler="179.99999999999997 9.1709555075478698e-18 180">
+                      <geom name="visual_14" material="Opaque(202,209,238)" class="unused" type="mesh" pos="-1.1102230246251565e-16 -1.1102230246251565e-16 0" euler="-2.135241551492719e-15 -9.5288674596735921e-16 2.8048281941214391e-15" mesh="Link_Arm_3"/>
+                      <joint name="Joint_Arm_2" class="unused" type="hinge" pos="0.06999999999999984 0.60002100000000014 -0.054999999999999938" axis="-2.1714925661374053e-15 -0.99999999999997358 2.3012894654735565e-07" frictionloss="30"/>
+                      <body name="Link_Arm_4" pos="0.49502074317010364 0.35502074250208659 -0.054999999999999161" euler="-179.99999999999994 -3.69302006734537e-14 -89.999999999999986">
+                        <geom name="visual_15" material="Opaque(202,209,238)" class="unused" type="mesh" pos="0 0 0" euler="8.5313397927227798e-16 -5.0033594287930099e-16 -2.3281650817915436e-16" mesh="Link_Arm_4"/>
+                        <joint name="Joint_Arm_3" class="unused" type="hinge" pos="-0.070000000000000118 0.42502099999999982 -1.1102230246251565e-16" axis="-1.1595107980196312e-07 -4.6778266998534426e-15 0.99999999999999301" limited="true" range="-24.999982066502238 154.99998048556108" frictionloss="30"/>
+                        <body name="Link_Arm_5" pos="-0.13999999999999918 7.2164496600635175e-16 -1.1102230246251565e-15" euler="180 3.1150242338659224e-15 -180">
+                          <geom name="visual_16" material="Opaque(202,209,238)" class="unused" type="mesh" pos="5.5511151231257827e-17 5.5511151231257827e-17 1.1102230246251565e-16" euler="-1.5930615648080041e-16 -6.5530447597594686e-17 6.8761356565682052e-17" mesh="Link_Arm_5"/>
+                          <joint name="Joint_Arm_4" class="unused" type="hinge" pos="-0.069999999999999896 0.29502100000000009 1.1102230246251565e-16" axis="-1.9763846505433508e-15 -0.99999999999999989 4.4436725154499128e-15" frictionloss="30"/>
+                          <body name="Link_Arm_6" pos="1.6653345369377348e-15 7.2164496600635175e-16 -1.5543122344752192e-15" euler="-6.013841526948023e-15 1.8257936652493794e-14 1.7650006308805443e-14">
+                            <geom name="visual_17" material="Opaque(202,209,238)" class="unused" type="mesh" pos="0 -5.5511151231257827e-17 0" euler="3.4726783597900781e-16 7.6488590444445145e-16 -2.4061377442684028e-16" mesh="Link_Arm_6"/>
+                            <joint name="Joint_Arm_5" class="unused" type="hinge" pos="-0.070000000000000118 0.12502099999999994 0" axis="-1.1595108005743659e-07 4.1017642244759075e-15 0.99999999999999334" limited="true" range="-44.999990638015831 134.99997191404748" frictionloss="30"/>
+                            <body name="Link_Arm_7" pos="-0.069999999999894646 -0.030000000000000138 4.0190073491430667e-14" euler="89.999999999999929 1.4311526239876914e-15 179.99999999999997">
+                              <geom name="visual_18" material="Opaque(202,209,238)" class="unused" type="mesh" pos="5.5511151231257827e-17 1.1102230246251565e-16 -5.5511151231257827e-17" euler="1.0248674478175973e-16 -6.0058211577535117e-16 -1.9821907490568653e-15" mesh="Link_Arm_7"/>
+                              <joint name="Joint_Arm_6" class="unused" type="hinge" pos="0 1.1102230246251565e-16 0.02999999999999986" axis="1.6411222027670723e-15 5.6916817323400209e-15 -0.99999999999999989" frictionloss="30"/>
+                              
+
+                              <body name="vx300s_right/gripper_link" pos="0 0 0" euler="0 90 0">
+                                <body name="vx300s_right/camera_focus" pos="0.15 0 0.01">
+                                    <site pos="0 0 0" size="0.01" type="sphere" name="right_cam_focus" rgba="0 0 1 0"/>
+                                </body>
+                                <site pos="0.15 0 0" size="0.003 0.003 0.03" type="box" name="cali_right_site1" rgba="0 0 1 0"/>
+                                <site pos="0.15 0 0" size="0.003 0.03 0.003" type="box" name="cali_right_site2" rgba="0 0 1 0"/>
+                                <site pos="0.15 0 0" size="0.03 0.003 0.003" type="box" name="cali_right_site3" rgba="0 0 1 0"/>
+                                <camera name="right_wrist" pos="-0.1 0 0.16" fovy="20" mode="fixed" euler="0 -1.05 -1.5707"/>
+                                <inertial pos="0.0395662 -2.56311e-07 0.00400649" quat="0.62033 0.619916 -0.339682 0.339869" mass="0.251652" diaginertia="0.000689546 0.000650316 0.000468142" />
+                                <!-- <joint name="vx300s_right/wrist_rotate" type="hinge" pos="0 0 0" axis="0 0 0" frictionloss="30" /> -->
+                                <geom pos="-0.02 0 0" quat="0.707107 0 0 0.707107" type="mesh" mesh="vx300s_7_gripper" name="vx300s_right/7_gripper"/>
+                                <geom pos="-0.020175 0 0" quat="0.707107 0 0 0.707107" type="mesh" mesh="vx300s_9_gripper_bar" name="vx300s_right/9_gripper_bar"/>
+                                <body name="vx300s_right/gripper_prop_link" pos="0.0485 0 0">
+                                    <inertial pos="0.002378 2.85e-08 0" quat="0 0 0.897698 0.440611" mass="0.008009" diaginertia="4.2979e-06 2.8868e-06 1.5314e-06"/>
+                                    <geom pos="-0.0685 0 0" quat="0.707107 0 0 0.707107" type="mesh" mesh="vx300s_8_gripper_prop" name="vx300s_right/8_gripper_prop"/>
+                                </body>
+                                <body name="vx300s_right/left_finger_link" pos="0.0687 0 0.005" euler="0 90 0">
+                                    <inertial pos="0.017344 -0.0060692 0" quat="0.449364 0.449364 -0.54596 -0.54596" mass="0.034796" diaginertia="2.48003e-05 1.417e-05 1.20797e-05" />
+                                    <joint name="vx300s_right/left_finger" pos="0 0 0" axis="0 1 0" type="slide" limited="true" range="0.021 0.057" frictionloss="30"/>
+                                    <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0.005 -0.052 0" euler="3.14 1.57 0" type="mesh" mesh="vx300s_10_gripper_finger_left" name="vx300s_right/10_left_gripper_finger"/>
+                                </body>
+                                <body name="vx300s_right/right_finger_link" pos="0.0687 0 0.005" euler="0 90 0">
+                                    <inertial pos="0.017344 0.0060692 0" quat="0.44937 -0.44937 0.545955 -0.545955" mass="0.034796" diaginertia="2.48002e-05 1.417e-05 1.20798e-05" />
+                                    <joint name="vx300s_right/right_finger" pos="0 0 0" axis="0 1 0" type="slide" limited="true" range="-0.057 -0.021" frictionloss="30"/>
+                                    <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0.005 0.052 0" euler="3.14 1.57 0" type="mesh" mesh="vx300s_10_gripper_finger_right" name="vx300s_right/10_right_gripper_finger"/>
+                                </body>
+                              </body>
+
+                            </body>
+                          </body>
+                        </body>
+                      </body>
+                    </body>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="Link_BackLeft_Wheel" pos="0.16946478521406136 0.21916478521406244 0.007999999999983444" euler="-180 -3.5063026723138234e-15 -90.00000000000027">
+          <geom name="visual_19" material="Opaque(47,47,47)" class="unused" type="mesh" pos="-2.7755575615628914e-17 -2.7755575615628914e-17 1.3877787807814457e-17" euler="-5.1156917376999695e-20 -4.0967678509180995e-20 -2.4867591879477049e-15" mesh="Link_BackLeft_Wheel"/>
+        </body>
+        <body name="Link_BackRight_Wheel" pos="-0.16946478521406119 0.21916478521406241 0.0079999999999832219" euler="180 -3.5106780013654047e-15 90.00000000000027">
+          <geom name="visual_20" material="Opaque(47,47,47)" class="unused" type="mesh" pos="-2.7755575615628914e-17 2.7755575615628914e-17 1.3877787807814457e-17" euler="-3.6956503271937114e-20 3.5255360129982929e-20 2.4868477917821924e-15" mesh="Link_BackRight_Wheel"/>
+        </body>
+      </body> 
+    </body>
+  </worldbody>
+
+  <actuator>
+      <position name="Joint_Arm_0" joint="Joint_Arm_0" kp="3200" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="Joint_Arm_1" joint="Joint_Arm_1" kp="3200" ctrllimited="true" ctrlrange="0 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="Joint_Arm_2" joint="Joint_Arm_2" kp="1600" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="Joint_Arm_3" joint="Joint_Arm_3" kp="1600" ctrllimited="true" ctrlrange="-0.43 2.7"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="Joint_Arm_4" joint="Joint_Arm_4" kp="800" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="Joint_Arm_5" joint="Joint_Arm_5" kp="800" ctrllimited="true" ctrlrange="-0.785 2.355"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="Joint_Arm_6" joint="Joint_Arm_6" kp="400" ctrllimited="true" ctrlrange="-3.14 3.14"  user="1" forcelimited="true" forcerange="-100 100"/>
+      <position name="left_finger"  joint="vx300s_right/left_finger" kp="400" ctrllimited="true" ctrlrange="0.021 0.057"  user="1"/>
+      <position name="right_finger" joint="vx300s_right/right_finger" kp="400" ctrllimited="true" ctrlrange="-0.057 -0.021"  user="1"/>
+  </actuator>
+</mujoco>

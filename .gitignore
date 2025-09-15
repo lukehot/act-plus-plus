@@ -70,6 +70,7 @@ coverage.xml
 *.py,cover
 .hypothesis/
 .pytest_cache/
+commands.txt
 
 # Translations
 *.mo
@@ -145,3 +146,7 @@ ckpts/
 *.png
 *.npy
 play.ipynb
+
+#data 
+act_data/
+ckpt_dir/

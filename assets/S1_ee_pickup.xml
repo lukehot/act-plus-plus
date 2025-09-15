@@ -1,0 +1,40 @@
+<mujoco>
+    <include file="scene_table.xml"/>
+
+    <equality>
+        <weld body1="mocap" body2="vx300s/gripper_link" />
+        <!-- <weld body1="Link_S1_Base_Override" body2="base_link"  />
+        <weld body1="Link_FrontLeft_WheelFrame" body2="base_link" solref="0.01 1" solimp=".25 .25 0.001" />
+        <weld body1="Link_FrontRight_WheelFrame" body2="base_link" solref="0.01 1" solimp=".25 .25 0.001" />
+        <weld body1="Link_FrontRight_Wheel" body2="base_link" solref="0.01 1" solimp=".25 .25 0.001" />
+        <weld body1="Link_FrontLeft_Wheel" body2="base_link" solref="0.01 1" solimp=".25 .25 0.001" /> -->
+        
+    </equality>
+
+ <include file="S1_with_aloha_gripper_ee.xml" />
+    <worldbody>
+    <!-- x left right , y out & in , z down & up -->
+            <body mocap="true" name="mocap" pos="0.3472 1.314 0.724">
+        <!-- <body mocap="true" name="mocap" pos="0.34724606 1.2338852 0.80517225"> -->
+        <!-- <body mocap="true" name="mocap" pos="-0.031 0.303 0.494"> -->
+            <site pos="0 0 0" size="0.003 0.003 0.03" type="box" name="mocap_site1" rgba="1 0 0 1"/>
+            <site pos="0 0 0" size="0.003 0.03 0.003" type="box" name="mocap_site2" rgba="1 0 0 1"/>
+            <site pos="0 0 0" size="0.03 0.003 0.003" type="box" name="mocap_site3" rgba="1 0 0 1"/>
+        </body>
+
+        <body name="box" pos="0.2 0.5 0.512">
+            <joint name="red_box_joint" type="free" frictionloss="0.01" />
+            <inertial pos="0 0 0" mass="0.05" diaginertia="0.002 0.002 0.002" />
+            <geom condim="4" solimp="2 1 0.01" solref="0.01 1" friction="1 0.005 0.0001" pos="0 0 0" size="0.02 0.02 0.02" type="box" name="red_box" rgba="1 0 0 1" />
+        </body>
+
+    </worldbody>
+
+    <actuator>
+        <position ctrllimited="true" ctrlrange="0.0184 0.058" joint="vx300s/left_finger" kp="200"  user="1"/>
+        <position ctrllimited="true" ctrlrange="-0.058 -0.0184" joint="vx300s/right_finger" kp="200"  user="1"/>
+    </actuator>
+
+
+
+</mujoco>

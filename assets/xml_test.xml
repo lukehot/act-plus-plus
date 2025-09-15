@@ -1,0 +1,10 @@
+<mujoco>
+    <include file="scene.xml"/>
+    <include file="vx300s_dependencies.xml"/>
+    <worldbody>
+        <include file="vx300s.xml" />
+
+    </worldbody>
+
+
+</mujoco>
